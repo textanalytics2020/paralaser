@@ -97,10 +97,7 @@ InstallFastBPE () {
   cd ${tools_ext}
   if [ ! -x fastBPE/fast ] ; then
     echo " - download fastBPE software from github"
-    wget https://github.com/glample/fastBPE/archive/master.zip
-    unzip master.zip
-    rm master.zip
-    mv fastBPE-master fastBPE
+    git clone --depth 1 https://github.com/glample/fastBPE.git
     cd fastBPE
     echo " - compiling"
     g++ -std=c++11 -pthread -O3 fastBPE/main.cc -IfastBPE -o fast
