@@ -1,0 +1,18 @@
+0	0.00000	München ist mit 1.484.226 Einwohnern (31. Dezember 2019) die bevölkerungsreichste Stadt Bayerns, die drittgrößte Gemeinde Deutschlands und mit 4777 Einwohnern pro Quadratkilometer die am dichtesten bevölkerte Gemeinde Deutschlands.
+0	0.38985	München ist die bevölkerungsreichste Stadt Bayerns und die drittgrößte und am dichtesten bevölkerte Gemeinde Deutschlands.
+1	0.00000	Das Haus ist rot.
+1	0.32625	Das Haus ist blau.
+2	0.00000	Peter begibt sich in seinem blauen Sportwagen zur Arbeit.
+3	0.00000	München ist die Landeshauptstadt des Freistaates Bayern.
+3	0.23118	München ist die Hauptstadt von Bayern.
+4	0.00000	Das Haus ist blau.
+4	0.32625	Das Haus ist rot.
+5	0.00000	Peter fährt zur Arbeit.
+6	0.00000	Die Farbe des Anwesens ist rötlich.
+7	0.00000	München ist die Hauptstadt von Bayern.
+7	0.23118	München ist die Landeshauptstadt des Freistaates Bayern.
+8	0.00000	Der Farbton des Hauses ist bläulich.
+9	0.00000	Die Wand des Hauses wurde mit roter Faber bestrichen.
+10	0.00000	Die Fassade des Hauses wurde mit blauer Farbe bestrichen.
+11	0.00000	München ist die bevölkerungsreichste Stadt Bayerns und die drittgrößte und am dichtesten bevölkerte Gemeinde Deutschlands.
+11	0.38985	München ist mit 1.484.226 Einwohnern (31. Dezember 2019) die bevölkerungsreichste Stadt Bayerns, die drittgrößte Gemeinde Deutschlands und mit 4777 Einwohnern pro Quadratkilometer die am dichtesten bevölkerte Gemeinde Deutschlands.

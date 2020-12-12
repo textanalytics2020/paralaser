@@ -110,7 +110,7 @@ InstallFastBPE () {
     if [ $? -eq 1 ] ; then
       echo "ERROR: compilation failed, please install manually"; exit
     fi
-    python setup.py install
+    python setup.py install --prefix ~/.local
   fi
 }
 

@@ -85,7 +85,7 @@ def IndexCreate(dname, idx_type,
         faiss.normalize_L2(x)
     idx.add(x)
     if save_index:
-        iname = 'TODO'
+        iname = dname.replace(".enc", ".index")
         print(' - saving index into ' + iname)
         faiss.write_index(idx, iname)
     return x, idx

@@ -104,7 +104,7 @@ for l in args.lang:
                verbose=args.verbose, over_write=False)
     d, idx = IndexCreate(os.path.join(args.base_dir, args.output + '.enc.' + l),
                          'FlatL2',
-                         verbose=args.verbose, save_index=False)
+                         verbose=args.verbose, save_index=True)
     all_data.append(d)
     all_index.append(idx)
 

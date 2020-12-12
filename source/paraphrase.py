@@ -108,14 +108,14 @@ def MarginAbs(em, ofp, params, args, stats):
 
 def MarginRatio(em, ofp, params, args, stats):
     D, I = params.idx.search(em, args.margin_k)
-    thresh = args.threshold
+    thresh = args.threshold_margin
     if args.embed:
         D, I = IndexDistL2(em, params.E, D, I, args.threshold_faiss)
         thresh = args.threshold_L2
 
     Mean = D.mean(axis=1)
     for n in range(D.shape[0]):
-        if D[n, 0] / Mean[n] <= args.threshold:
+        if D[n, 0] / Mean[n] <= thresh:
             if args.include_source == 'matches':
                 ofp.write('{:d}\t{:6.1f}\t{}\n'
                           .format(stats.nbs, 0.0, sentences[n].replace('@@ ', '')))
