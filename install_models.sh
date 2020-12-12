@@ -15,10 +15,7 @@
 # This bash script installs sentence encoders from Amazon s3
 #
 
-if [ -z ${LASER} ] ; then 
-  echo "Please set the environment variable 'LASER'"
-  exit
-fi
+export LASER=`dirname "$(readlink -f $0)"`
 
 mdir="${LASER}/models"
 

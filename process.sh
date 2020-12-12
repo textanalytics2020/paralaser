@@ -1,35 +1,36 @@
 #!/bin/bash
 
-export LASER=$PWD
+export LASER=`dirname "$(readlink -f $0)"`
 
 model_dir="${LASER}/models"
 encoder="${model_dir}/bilstm.93langs.2018-12-26.pt"
 bpe_codes="${model_dir}/93langs.fcodes"
-edir="embed"
+edir="${LASER}/embed"
+ddir="${LASER}/dev"
 
-cp dev/input.txt dev/languagesimplification.de
+cp ${ddir}/input.txt ${ddir}/languagesimplification.de
 
-rm embed/languagesimplification.*
+rm -rf ${edir}
 
-python3 source/similarity_search.py \
+poetry run python -m paralaser.similarity_search \
     --encoder ${encoder} \
     --bpe-codes ${bpe_codes} \
     --lang de \
     --base-dir . \
-    --data dev/languagesimplification \
+    --data ${ddir}/languagesimplification \
     --output ${edir}/languagesimplification
 
-cp embed/languagesimplification.index.de dev/input.index
+cp ${edir}/languagesimplification.index.de ${ddir}/input.index
 
-python3 source/binary_offsets.py
+poetry run python -m paralaser.binary_offsets
 
-python3 source/paraphrase.py \
+poetry run python -m paralaser.paraphrase \
     --encoder ${encoder} \
     --bpe-codes ${bpe_codes} \
     --token-lang de \
-    --index dev/input.index \
-    --text dev/input.txt \
+    --index ${ddir}/input.index \
+    --text ${ddir}/input.txt \
     --margin absolute \
-    -i dev/input.txt \
-    -p dev/paraphrases.txt \
+    -i ${ddir}/input.txt \
+    -p ${ddir}/paraphrases.txt \
 

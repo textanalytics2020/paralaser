@@ -25,14 +25,9 @@ import pdb
 import numpy as np
 from collections import namedtuple
 
-# get environment
-assert os.environ.get('LASER'), 'Please set the enviornment variable LASER'
-LASER = os.environ['LASER']
-
-sys.path.append(LASER + '/source/lib')
-from indexing import IndexLoad, IndexTextOpen, IndexTextQuery, SplitOpen, SplitAccess
-from embed import SentenceEncoder, EncodeLoad, EncodeFile, EncodeTime
-from text_processing import Token, BPEfastApply
+from .embed import SentenceEncoder, EncodeLoad, EncodeFile, EncodeTime
+from .lib.text_processing import Token, BPEfastApply
+from .lib.indexing import IndexLoad, IndexTextOpen, IndexTextQuery, SplitOpen, SplitAccess
 
 SPACE_NORMALIZER = re.compile("\s+")
 Batch = namedtuple('Batch', 'srcs tokens lengths')

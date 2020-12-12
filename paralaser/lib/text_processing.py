@@ -34,7 +34,7 @@ DESCAPE = MOSES_BDIR + 'deescape-special-chars.perl'
 REM_NON_PRINT_CHAR = MOSES_BDIR + 'remove-non-printing-char.perl'
 
 # Romanization (Greek only)
-ROMAN_LC = 'python3 ' + LASER + '/source/lib/romanize_lc.py -l '
+ROMAN_LC = 'python3 ' + LASER + '/paralaser/lib/romanize_lc.py -l '
 
 # Mecab tokenizer for Japanese
 MECAB = LASER + '/tools-external/mecab'

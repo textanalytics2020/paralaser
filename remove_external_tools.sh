@@ -15,12 +15,9 @@
 # This bash script removes all installed third party software 
 #
 
-if [ -z ${LASER+x} ] ; then 
-  echo "Please set the environment variable 'LASER'"
-  exit
-fi
+export LASER=`dirname "$(readlink -f $0)"`
 
 bdir="${LASER}"
 tools_ext="${bdir}/tools-external"
 
-/bin/rm -rf ${tools_ext}
+rm -rf ${tools_ext}

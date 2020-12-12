@@ -20,15 +20,9 @@ import argparse
 import faiss
 import numpy as np
 
-# get environment
-assert os.environ.get('LASER'), 'Please set the enviornment variable LASER'
-LASER = os.environ['LASER']
-
-sys.path.append(LASER + '/source')
-sys.path.append(LASER + '/source/lib')
-from embed import SentenceEncoder, EncodeLoad, EncodeFile
-from text_processing import Token, BPEfastApply
-from indexing import IndexCreate, IndexSearchMultiple, IndexPrintConfusionMatrix
+from .embed import SentenceEncoder, EncodeLoad, EncodeFile
+from .lib.text_processing import Token, BPEfastApply
+from .lib.indexing import IndexCreate, IndexSearchMultiple, IndexPrintConfusionMatrix
 
 ###############################################################################
 

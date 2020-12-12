@@ -15,10 +15,7 @@
 # This bash script installs third party software 
 #
 
-if [ -z ${LASER} ] ; then 
-  echo "Please set the environment variable 'LASER'"
-  exit
-fi
+export LASER=`dirname "$(readlink -f $0)"`
 
 bdir="${LASER}"
 tools_ext="${bdir}/tools-external"
@@ -102,7 +99,7 @@ InstallFastBPE () {
     echo " - download fastBPE software from github"
     wget https://github.com/glample/fastBPE/archive/master.zip
     unzip master.zip
-    /bin/rm master.zip
+    rm master.zip
     mv fastBPE-master fastBPE
     cd fastBPE
     echo " - compiling"
@@ -110,7 +107,7 @@ InstallFastBPE () {
     if [ $? -eq 1 ] ; then
       echo "ERROR: compilation failed, please install manually"; exit
     fi
-    python setup.py install --prefix ~/.local
+    python setup.py install
   fi
 }
 
