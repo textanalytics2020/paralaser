@@ -2,17 +2,35 @@
 0	0.38985	München ist die bevölkerungsreichste Stadt Bayerns und die drittgrößte und am dichtesten bevölkerte Gemeinde Deutschlands.
 1	0.00000	Das Haus ist rot.
 1	0.32625	Das Haus ist blau.
+1	0.52111	Der Farbton des Hauses ist bläulich.
+1	0.54324	Die Farbe des Anwesens ist rötlich.
 2	0.00000	Peter begibt sich in seinem blauen Sportwagen zur Arbeit.
+2	0.56204	Peter fährt zur Arbeit.
 3	0.00000	München ist die Landeshauptstadt des Freistaates Bayern.
 3	0.23118	München ist die Hauptstadt von Bayern.
+3	0.49123	München ist die bevölkerungsreichste Stadt Bayerns und die drittgrößte und am dichtesten bevölkerte Gemeinde Deutschlands.
 4	0.00000	Das Haus ist blau.
 4	0.32625	Das Haus ist rot.
+4	0.49914	Der Farbton des Hauses ist bläulich.
 5	0.00000	Peter fährt zur Arbeit.
+5	0.56204	Peter begibt sich in seinem blauen Sportwagen zur Arbeit.
 6	0.00000	Die Farbe des Anwesens ist rötlich.
+6	0.41338	Der Farbton des Hauses ist bläulich.
+6	0.54324	Das Haus ist rot.
 7	0.00000	München ist die Hauptstadt von Bayern.
 7	0.23118	München ist die Landeshauptstadt des Freistaates Bayern.
+7	0.48597	München ist die bevölkerungsreichste Stadt Bayerns und die drittgrößte und am dichtesten bevölkerte Gemeinde Deutschlands.
 8	0.00000	Der Farbton des Hauses ist bläulich.
+8	0.41338	Die Farbe des Anwesens ist rötlich.
+8	0.46674	Die Fassade des Hauses wurde mit blauer Farbe bestrichen.
+8	0.49914	Das Haus ist blau.
+8	0.52111	Das Haus ist rot.
 9	0.00000	Die Wand des Hauses wurde mit roter Faber bestrichen.
+9	0.41417	Die Fassade des Hauses wurde mit blauer Farbe bestrichen.
 10	0.00000	Die Fassade des Hauses wurde mit blauer Farbe bestrichen.
+10	0.41417	Die Wand des Hauses wurde mit roter Faber bestrichen.
+10	0.46674	Der Farbton des Hauses ist bläulich.
 11	0.00000	München ist die bevölkerungsreichste Stadt Bayerns und die drittgrößte und am dichtesten bevölkerte Gemeinde Deutschlands.
 11	0.38985	München ist mit 1.484.226 Einwohnern (31. Dezember 2019) die bevölkerungsreichste Stadt Bayerns, die drittgrößte Gemeinde Deutschlands und mit 4777 Einwohnern pro Quadratkilometer die am dichtesten bevölkerte Gemeinde Deutschlands.
+11	0.48597	München ist die Hauptstadt von Bayern.
+11	0.49123	München ist die Landeshauptstadt des Freistaates Bayern.
