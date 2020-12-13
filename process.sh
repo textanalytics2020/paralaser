@@ -1,12 +1,12 @@
 #!/bin/bash
 
-export LASER=`dirname "$(readlink -f $0)"`
+export LASER="$HOME/.local/share/paralaser"
 
 model_dir="${LASER}/models"
 encoder="${model_dir}/bilstm.93langs.2018-12-26.pt"
 bpe_codes="${model_dir}/93langs.fcodes"
-edir="${LASER}/embed"
-ddir="${LASER}/dev"
+edir="embed"
+ddir="dev"
 
 cp ${ddir}/input.txt ${ddir}/languagesimplification.de
 

@@ -2,6 +2,20 @@
 
 Paralaser is a fork of [LASER](https://github.com/facebookresearch/LASER) that aims to make integration into other Python projects easier and improve paraphrase searcher of LASER.
 
+## Setup
+
+Note: Python 3.8+ and Perl (for Moses Tokenizer) have to be installed
+
+1. [Install poetry](https://python-poetry.org/docs/#installation).
+2. Clone repository
+3. Install packages: `cd paralaser && poetry install`
+4. Activate virtual environment: `poetry shell`
+5. Install external dependencies: `./install_external_tools.sh`
+6. Download encoders: `python -m paralaser`
+
+## LASER
+
+From the authors of LASER:
 LASER is a library to calculate and use multilingual sentence embeddings.
 It provides an encoder which was trained on [**93 languages**](#supported-languages), written in 23 different alphabets [6].
 This includes all European languages, many Asian and Indian languages, Arabic, Persian, Hebrew, ..., as well as various minority languages and dialects.
@@ -16,15 +30,6 @@ languages which have not been seen during training, but which are in
 a language family which is covered by other languages.
 A detailed description how the multilingual sentence embeddings are trained can
 be found in [6], together with an extensive experimental evaluation.
-
-## Setup
-
-1. [Install](https://python-poetry.org/docs/#installation) ```poetry```.
-2. Clone repository
-3. Install packages: `cd paralaser && poetry install`
-4. Activate virtual environment: `poetry shell`
-5. Install external dependencies: `./install_external_tools.sh`
-6. Download encoders: `./install_models.sh`
 
 ## Applications
 

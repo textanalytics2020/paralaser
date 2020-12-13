@@ -12,6 +12,8 @@ faiss-gpu = "^1.6.5"
 transliterate = "^1.10.2"
 jieba = "^0.42.1"
 torch = "^1.7.1"
+wget = "^3.2"
+fastBPE = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 Cython = "^0.29.21"

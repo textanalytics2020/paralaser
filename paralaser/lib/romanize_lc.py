@@ -18,6 +18,9 @@ import os
 import sys
 import argparse
 from transliterate import translit, get_available_language_codes
+from pathlib import Path
+
+script_path = Path(__file__)
 
 parser = argparse.ArgumentParser(
     formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -41,11 +44,13 @@ parser.add_argument(
     '--preserve-case', '-C', action='store_true',
     help="Preserve case of input texts (default is all lower case)")
 
-args = parser.parse_args()
 
-for line in args.input:
-    if args.language != "none":
-        line = translit(line, args.language, reversed=True)
-    if not args.preserve_case:
-        line = line.lower()
-    args.output.write(line)
+if __name__ == "__main__":
+    args = parser.parse_args()
+
+    for line in args.input:
+        if args.language != "none":
+            line = translit(line, args.language, reversed=True)
+        if not args.preserve_case:
+            line = line.lower()
+        args.output.write(line)

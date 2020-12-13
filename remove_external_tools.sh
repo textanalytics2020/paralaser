@@ -15,7 +15,7 @@
 # This bash script removes all installed third party software 
 #
 
-export LASER=`dirname "$(readlink -f $0)"`
+export LASER="$HOME/.local/share/paralaser"
 
 bdir="${LASER}"
 tools_ext="${bdir}/tools-external"

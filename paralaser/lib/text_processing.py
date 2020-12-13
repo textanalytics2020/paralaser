@@ -21,23 +21,16 @@ import fastBPE
 import numpy as np
 from subprocess import run, check_output, DEVNULL
 
-# get environment
-assert os.environ.get('LASER'), 'Please set the enviornment variable LASER'
-LASER = os.environ['LASER']
-
-FASTBPE = LASER + '/tools-external/fastBPE/fast'
-MOSES_BDIR = LASER + '/tools-external/moses-tokenizer/tokenizer/'
-MOSES_TOKENIZER = MOSES_BDIR + 'tokenizer.perl -q -no-escape -threads 20 -l '
-MOSES_LC = MOSES_BDIR + 'lowercase.perl'
-NORM_PUNC = MOSES_BDIR + 'normalize-punctuation.perl -l '
-DESCAPE = MOSES_BDIR + 'deescape-special-chars.perl'
-REM_NON_PRINT_CHAR = MOSES_BDIR + 'remove-non-printing-char.perl'
-
-# Romanization (Greek only)
-ROMAN_LC = 'python3 ' + LASER + '/paralaser/lib/romanize_lc.py -l '
-
-# Mecab tokenizer for Japanese
-MECAB = LASER + '/tools-external/mecab'
+from ..tools import (
+    FASTBPE,
+    MOSES_TOKENIZER,
+    MOSES_LC,
+    NORM_PUNC,
+    DESCAPE,
+    REM_NON_PRINT_CHAR,
+    ROMAN_LC,
+    MECAB
+)
 
 
 ###############################################################################

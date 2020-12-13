@@ -15,6 +15,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "fastbpe"
+version = "0.1.0"
+description = "C++ implementation of Neural Machine Translation of Rare Words with Subword Units, with Python API."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "jieba"
 version = "0.42.1"
 description = "Chinese Words Segmentation Utilities"
@@ -69,10 +77,18 @@ category = "main"
 optional = false
 python-versions = "*"
 
+[[package]]
+name = "wget"
+version = "3.2"
+description = "pure python download utility"
+category = "main"
+optional = false
+python-versions = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b343401c83422a964a241c5395172c5ad4520408bd766a235b2ec3d0c6ca3d02"
+content-hash = "db1ed3f7b708461ada26a82dd8de0acab476d5094b87dd627ef405630a9159d5"
 
 [metadata.files]
 cython = [
@@ -118,6 +134,9 @@ faiss-gpu = [
     {file = "faiss_gpu-1.6.5-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:63565a0b51867f3aac91c5e6d2453a3d26ddeef988ff0d2f80853251197fb388"},
     {file = "faiss_gpu-1.6.5-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:f4e137fcd625146ab5c945cf01aaefedc271c599c6b8ffd0a1d3a33e7a99de9b"},
     {file = "faiss_gpu-1.6.5-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:4ec50cdca40ba8a35d9d0e30125c98e685348d4e2e8ae8ecb4c11e595d3efb05"},
+]
+fastbpe = [
+    {file = "fastBPE-0.1.0.tar.gz", hash = "sha256:95eef4be2689e822a918ac4eae3349cd78ca3f28af591afa421f8fac6d4cd889"},
 ]
 jieba = [
     {file = "jieba-0.42.1.tar.gz", hash = "sha256:055ca12f62674fafed09427f176506079bc135638a14e23e25be909131928db2"},
@@ -184,4 +203,7 @@ typing-extensions = [
     {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},
     {file = "typing_extensions-3.7.4.3-py3-none-any.whl", hash = "sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918"},
     {file = "typing_extensions-3.7.4.3.tar.gz", hash = "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c"},
+]
+wget = [
+    {file = "wget-3.2.zip", hash = "sha256:35e630eca2aa50ce998b9b1a127bb26b30dfee573702782aa982f875e3f16061"},
 ]
