@@ -7,8 +7,9 @@ def binary_indices(path):
         for line in f:
             indices.append(i)
             i += len(line)
-    return indices
+    return np.array(indices, dtype=np.int64)
 
-indices = np.array(binary_indices("dev/input.txt"), dtype=np.int64)
-with open("dev/input.ref.bin64", "wb") as f:
-    indices.tofile(f)
+def save_binary_indices(txt_fname):
+    fname = txt_fname.replace('.txt', '.ref.bin64')
+    with open(fname, "wb") as f:
+        binary_indices(txt_fname).tofile(f)

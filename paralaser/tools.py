@@ -3,10 +3,10 @@ from .lib.romanize_lc import script_path as roman_lc_path
 
 home = Path.home()
 laser_dir = home / ".local" / "share" / "paralaser"
-tools_dir = laser_dir / "tools-external"
+tools_dir = Path(__file__).parent / "tools-external"
 moses_dir = tools_dir / "moses-tokenizer" / "tokenizer"
 
-FASTBPE = f'{tools_dir / "fastBPE" / "fast"}'
+FASTBPE = f'{tools_dir / "fast"}'
 MOSES_TOKENIZER = f'perl {moses_dir / "tokenizer.perl"} -q -no-escape -threads 20 -l '
 MOSES_LC = f'perl {moses_dir / "lowercase.perl"}'
 NORM_PUNC = f'perl {moses_dir / "normalize-punctuation.perl"} -l '

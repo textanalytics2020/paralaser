@@ -27,15 +27,19 @@ from collections import namedtuple
 
 from .embed import SentenceEncoder, EncodeLoad, EncodeFile, EncodeTime
 from .lib.text_processing import Token, BPEfastApply
-from .lib.indexing import IndexLoad, IndexTextOpen, IndexTextQuery, SplitOpen, SplitAccess
+from .lib.indexing import IndexCreate, IndexLoad, IndexTextOpen, IndexTextQuery, SplitOpen, SplitAccess
+from .models import encoder, bpe_codes
+from .binary_offsets import save_binary_indices
 
 SPACE_NORMALIZER = re.compile("\s+")
 Batch = namedtuple('Batch', 'srcs tokens lengths')
 
-# calculate L2 distance between [x]
-# and the vectors referenced in idxs
-# x should be already normalized
 def IndexDistL2(X, E, D, I, thresh=1.0, dtype=np.float32, sort=True):
+    """
+    calculate L2 distance between [x]
+    and the vectors referenced in idxs
+    x should be already normalized
+    """
     nb, nK = I.shape
     dim = X.shape[1]
     dist_l2 = np.empty((nb, nK), dtype=np.float32)
@@ -60,13 +64,10 @@ def IndexDistL2(X, E, D, I, thresh=1.0, dtype=np.float32, sort=True):
 
     return dist_l2, I
 
-###############################################################################
-#
-# Apply an absolute threshold on the distance
-#
-###############################################################################
-
 def MarginAbs(em, ofp, params, args, stats):
+    """
+    Apply an absolute threshold on the distance
+    """
     D, I = params.idx.search(em, args.kmax)
     thresh = args.threshold_faiss
     if args.embed:
@@ -95,13 +96,10 @@ def MarginAbs(em, ofp, params, args, stats):
         stats.nbs += 1
 
 
-###############################################################################
-#
-# Apply an threshold on the ratio between distance and average
-#
-###############################################################################
-
 def MarginRatio(em, ofp, params, args, stats):
+    """
+    Apply an threshold on the ratio between distance and average
+    """
     D, I = params.idx.search(em, args.margin_k)
     thresh = args.threshold_margin
     if args.embed:
@@ -125,14 +123,10 @@ def MarginRatio(em, ofp, params, args, stats):
                   .format(stats.nbs, 0.0, sentences[n].replace('@@ ', '')))
 
 
-###############################################################################
-
 def MarginDist(em, ofp, params, args, stats):
-    print('ERROR: MarginAbs not implemented')
+    print('ERROR: MarginDist not implemented')
     sys.exit(1)
 
-
-###############################################################################
 
 def buffered_read(fp, buffer_size):
     buffer = []
@@ -146,135 +140,142 @@ def buffered_read(fp, buffer_size):
         yield buffer
 
 
-###############################################################################
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser('LASER: paraphrase tool')
 
-parser = argparse.ArgumentParser('LASER: paraphrase tool')
+    parser.add_argument('--encoder', type=str, default=encoder,
+        help='encoder to be used')
+    parser.add_argument('--encoding', default='utf-8',
+        help='Character encoding for input/output')
+    parser.add_argument('--token-lang', type=str, default='--',
+        help="Language of tokenizer ('--' for no tokenization)")
+    parser.add_argument('--bpe-codes', type=str, default=bpe_codes,
+        help='BPE codes')
+    parser.add_argument('--buffer-size', type=int, default=100,
+        help='Buffer size (sentences)')
+    parser.add_argument('--max-tokens', type=int, default=12000,
+        help='Maximum number of tokens to process in a batch')
+    parser.add_argument('--max-sentences', type=int, default=None,
+        help='Maximum number of sentences to process in a batch')
+    parser.add_argument('--cpu', action='store_true',
+        help='Use CPU instead of GPU')
 
-parser.add_argument('--encoder', type=str, required=True,
-    help='encoder to be used')
-parser.add_argument('--encoding', default='utf-8',
-    help='Character encoding for input/output')
-parser.add_argument('--token-lang', type=str, default='--',
-    help="Language of tokenizer ('--' for no tokenization)")
-parser.add_argument('--bpe-codes', type=str, default=None, required=True,
-    help='BPE codes')
-parser.add_argument('--buffer-size', type=int, default=100,
-    help='Buffer size (sentences)')
-parser.add_argument('--max-tokens', type=int, default=12000,
-    help='Maximum number of tokens to process in a batch')
-parser.add_argument('--max-sentences', type=int, default=None,
-    help='Maximum number of sentences to process in a batch')
-parser.add_argument('--cpu', action='store_true',
-    help='Use CPU instead of GPU')
+    #parser.add_argument('--index', type=str, required=True,
+    #    help='FAISS index')
+    parser.add_argument('--nprobe', type=int, default=128,
+        help='FAISS: value of nprobe')
+    parser.add_argument('--text', type=str, required=True,
+        help='File with indexed texts')
+    parser.add_argument(
+        '--dim', type=int, default=1024,
+        help='Dimension of specified sentence embeddings')
+    parser.add_argument(
+        '--embed', type=str, default=None,
+        help='Sentence embeddings, true L2 distance will be calculated when specified')
 
-parser.add_argument('--index', type=str, required=True,
-    help='FAISS index')
-parser.add_argument('--nprobe', type=int, default=128,
-    help='FAISS: value of nprobe')
-parser.add_argument('--text', type=str, required=True,
-    help='File with indexed texts')
-parser.add_argument(
-    '--dim', type=int, default=1024,
-    help='Dimension of specified sentence embeddings')
-parser.add_argument(
-    '--embed', type=str, default=None,
-    help='Sentence embeddings, true L2 distance will be calculated when specified')
+    parser.add_argument('-i', '--input', type=str, required=True,
+        help='Input text file')
+    parser.add_argument('-p', '--output', type=str, default='--',
+        help='Output paraphrases')
+    parser.add_argument('--kmax', type=int, default=10,
+        help='Max value of distance or margin of each paraphrase')
+    parser.add_argument('--dedup', type=int, default=1,
+        help='Deduplicate list of paraphrases')
+    parser.add_argument('--include-source', default='never',
+        choices=['never', 'matches', 'always'],
+        help='Include source sentence in the list of paraphrases')
+    parser.add_argument('--margin',
+        choices=['absolute', 'distance', 'ratio'],
+        default='ratio', help='Margin function')
+    parser.add_argument('-T', '--threshold-margin', type=float, default=0.9,
+        help='Threshold on margin')
+    parser.add_argument('--threshold-faiss', type=float, default=0.4,
+        help='Threshold on FAISS distance')
+    parser.add_argument('--threshold-L2', type=float, default=0.2,
+        help='Threshold on L2 distance')
+    parser.add_argument('--margin-k', type=int, default=4,
+        help='Number of nearest neighbors for margin calculation')
 
-parser.add_argument('-i', '--input', type=str, required=True,
-    help='Input text file')
-parser.add_argument('-p', '--output', type=str, default='--',
-    help='Output paraphrases')
-parser.add_argument('--kmax', type=int, default=10,
-    help='Max value of distance or margin of each paraphrase')
-parser.add_argument('--dedup', type=int, default=1,
-    help='Deduplicate list of paraphrases')
-parser.add_argument('--include-source', default='never',
-    choices=['never', 'matches', 'always'],
-    help='Include source sentence in the list of paraphrases')
-parser.add_argument('--margin',
-    choices=['absolute', 'distance', 'ratio'],
-    default='ratio', help='Margin function')
-parser.add_argument('-T', '--threshold-margin', type=float, default=0.9,
-    help='Threshold on margin')
-parser.add_argument('--threshold-faiss', type=float, default=0.4,
-    help='Threshold on FAISS distance')
-parser.add_argument('--threshold-L2', type=float, default=0.2,
-    help='Threshold on L2 distance')
-parser.add_argument('--margin-k', type=int, default=4,
-    help='Number of nearest neighbors for margin calculation')
-
-parser.add_argument('--verbose', action='store_true',
-    help='Detailed output')
-
-
-print('\nLASER: paraphrase tool')
-args = parser.parse_args()
-
-# index,
-# memory mapped texts, references and word counts
-# encoder
-params = namedtuple('params', 'idx T R W M E enc')
-
-# open text and reference file
-params.T, params.R, params.W, params.M = IndexTextOpen(args.text)
-
-# Open on-disk embeddings for L2 distances
-if args.embed:
-    params.E = SplitOpen(args.embed, ['en'],
-                                args.dim, np.float32, verbose=False)
-
-# load FAISS index
-params.idx = IndexLoad(args.index, args.nprobe)
-
-# load sentence encoder
-params.enc = EncodeLoad(args)
+    parser.add_argument('--verbose', action='store_true',
+        help='Detailed output')
 
 
-margin_methods = {'absolute': MarginAbs,
-                  'distance': MarginDist,
-                  'ratio': MarginRatio}
+    print('\nLASER: paraphrase tool')
+    args = parser.parse_args()
 
-with tempfile.TemporaryDirectory() as tmpdir:
-    ifile = args.input
-    if args.token_lang != '--':
-        ifile = os.path.join(tmpdir, 'tok')
-        Token(args.input,
-              ifile,
-              lang=args.token_lang,
-              romanize=True if args.token_lang == 'el' else False,
-              lower_case=True, gzip=False,
-              verbose=args.verbose, over_write=False)
+    # index,
+    # memory mapped texts, references and word counts
+    # encoder
+    params = namedtuple('params', 'idx T R W M E enc')
 
-    if args.bpe_codes:
+    # open text and reference file
+    save_binary_indices(args.text)
+    params.T, params.R, params.W, params.M = IndexTextOpen(args.text)
+
+    # Open on-disk embeddings for L2 distances
+    if args.embed:
+        params.E = SplitOpen(args.embed, ['en'],
+                                    args.dim, np.float32, verbose=False)
+
+    # load sentence encoder
+    params.enc = EncodeLoad(args)
+
+
+    margin_methods = {'absolute': MarginAbs,
+                    'distance': MarginDist,
+                    'ratio': MarginRatio}
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        ifile = args.input
+        if args.token_lang != '--':
+            ifile = os.path.join(tmpdir, 'tok')
+            Token(args.input,
+                ifile,
+                lang=args.token_lang,
+                romanize=True if args.token_lang == 'el' else False,
+                lower_case=True, gzip=False,
+                verbose=args.verbose, over_write=False)
+
         bpe_file = os.path.join(tmpdir, 'bpe')
         BPEfastApply(ifile,
-                     bpe_file,
-                     args.bpe_codes,
-                     verbose=args.verbose, over_write=False)
+                    bpe_file,
+                    args.bpe_codes,
+                    verbose=args.verbose, over_write=False)
         ifile = bpe_file
 
-    print(' - processing (batch size is {:d})'.format(args.buffer_size))
-    ifp = open(ifile, 'r', encoding=args.encoding, errors='surrogateescape')
-    if args.output == '--':
-        ofp = sys.stdout
-    else:
-        ofp = open(args.output, 'w', encoding=args.encoding, errors='surrogateescape')
-    stats = namedtuple('stats', 'ns np')
-    stats.nbs = 0
-    stats.nbp = 0
-    t = time.time()
-    for sentences in buffered_read(ifp, args.buffer_size):
-        embed = params.enc.encode_sentences(sentences)
-        faiss.normalize_L2(embed)
-        # call function for selected margin method
-        margin_methods.get(args.margin)(embed, ofp, params, args, stats)
-        if stats.nbs % 1000 == 0:
-            print('\r - {:d} sentences {:d} paraphrases'
-                  .format(stats.nbs, stats.nbp), end='')
+        # Encode
+        enc_file = os.path.join(tmpdir, "enc")
+        EncodeFile(params.enc, bpe_file, enc_file, verbose=args.verbose, over_write=False)
+        
+        # Index
+        idx_file = os.path.join(tmpdir, "idx")
+        IndexCreate(enc_file, "FlatL2", verbose=args.verbose, save_index=idx_file)
 
-    ifp.close()
-    if args.output != '--':
-        ofp.close()
-    print('\r - {:d} sentences {:d} paraphrases'
-          .format(stats.nbs, stats.nbp), end='')
-    EncodeTime(t)
+        # load FAISS index
+        params.idx = IndexLoad(idx_file, args.nprobe)
+
+        print(' - processing (batch size is {:d})'.format(args.buffer_size))
+        ifp = open(ifile, 'r', encoding=args.encoding, errors='surrogateescape')
+        if args.output == '--':
+            ofp = sys.stdout
+        else:
+            ofp = open(args.output, 'w', encoding=args.encoding, errors='surrogateescape')
+        stats = namedtuple('stats', 'ns np')
+        stats.nbs = 0
+        stats.nbp = 0
+        t = time.time()
+        for sentences in buffered_read(ifp, args.buffer_size):
+            embed = params.enc.encode_sentences(sentences)
+            faiss.normalize_L2(embed)
+            # call function for selected margin method
+            margin_methods.get(args.margin)(embed, ofp, params, args, stats)
+            if stats.nbs % 1000 == 0:
+                print('\r - {:d} sentences {:d} paraphrases'
+                    .format(stats.nbs, stats.nbp), end='')
+
+        ifp.close()
+        if args.output != '--':
+            ofp.close()
+        print('\r - {:d} sentences {:d} paraphrases'
+            .format(stats.nbs, stats.nbp), end='')
+        EncodeTime(t)

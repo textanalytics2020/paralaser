@@ -71,7 +71,7 @@ def SplitAccess(M, idx):
 # create an FAISS index on the given data
 
 def IndexCreate(dname, idx_type,
-                verbose=False, normalize=True, save_index=False, dim=1024):
+                verbose=False, normalize=True, save_index=None, dim=1024):
 
     assert idx_type == 'FlatL2', 'only FlatL2 index is currently supported'
     x = np.fromfile(dname, dtype=np.float32, count=-1)
@@ -85,7 +85,7 @@ def IndexCreate(dname, idx_type,
         faiss.normalize_L2(x)
     idx.add(x)
     if save_index:
-        iname = dname.replace(".enc", ".index")
+        iname = save_index
         print(' - saving index into ' + iname)
         faiss.write_index(idx, iname)
     return x, idx

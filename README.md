@@ -4,14 +4,14 @@ Paralaser is a fork of [LASER](https://github.com/facebookresearch/LASER) that a
 
 ## Setup
 
-Note: Python 3.8+ and Perl (for Moses Tokenizer) have to be installed
+Note: Python 3.8+ and Perl (for Moses Tokenizer) have to be installed.
+Windows and macOS are currently not supported.
 
 1. [Install poetry](https://python-poetry.org/docs/#installation).
 2. Clone repository
 3. Install packages: `cd paralaser && poetry install`
 4. Activate virtual environment: `poetry shell`
-5. Install external dependencies: `./install_external_tools.sh`
-6. Download encoders: `python -m paralaser`
+5. Download models: `python -m paralaser.models`
 
 ## LASER
 
