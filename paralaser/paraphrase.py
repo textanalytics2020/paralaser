@@ -164,8 +164,8 @@ if __name__ == "__main__":
     #    help='FAISS index')
     parser.add_argument('--nprobe', type=int, default=128,
         help='FAISS: value of nprobe')
-    parser.add_argument('--text', type=str, required=True,
-        help='File with indexed texts')
+    #parser.add_argument('--text', type=str, required=True,
+    #    help='File with indexed texts')
     parser.add_argument(
         '--dim', type=int, default=1024,
         help='Dimension of specified sentence embeddings')
@@ -209,8 +209,8 @@ if __name__ == "__main__":
     params = namedtuple('params', 'idx T R W M E enc')
 
     # open text and reference file
-    save_binary_indices(args.text)
-    params.T, params.R, params.W, params.M = IndexTextOpen(args.text)
+    save_binary_indices(args.input)
+    params.T, params.R, params.W, params.M = IndexTextOpen(args.input)
 
     # Open on-disk embeddings for L2 distances
     if args.embed:
