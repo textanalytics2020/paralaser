@@ -1,9 +1,13 @@
 [tool.poetry]
 name = "paralaser"
-version = "0.1.1"
+version = "0.1.2"
 authors = []
 description = ""
 license = "BSD-3-Clause"
+
+include = [
+    { path = "paralaser/tools-external/**/*" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
