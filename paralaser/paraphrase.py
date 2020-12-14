@@ -280,7 +280,7 @@ def main(args):
 
 
 def run(args):
-    args = parse.parse_args(args)
+    args = parser.parse_args(args)
     main(args)
 
 
