@@ -7,6 +7,7 @@ license = "BSD-3-Clause"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+Cython = "^0.29.21"
 numpy = "^1.19.4"
 faiss-gpu = "^1.6.5"
 transliterate = "^1.10.2"
@@ -16,7 +17,6 @@ wget = "^3.2"
 fastBPE = { git = "https://github.com/glample/fastBPE.git" }
 
 [tool.poetry.dev-dependencies]
-Cython = "^0.29.21"
 
 # [tool.poetry.build]
 # generate-setup-file = false
