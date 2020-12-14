@@ -15,3 +15,4 @@ tasks/xnli/multinli_1.0*
 dev/*
 !dev/input.txt
 !dev/paraphrases.txt
+dist/
