@@ -15,12 +15,19 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "fastbpe"
-version = "0.1.0"
+name = "fastBPE"
+version = "0.1.1"
 description = "C++ implementation of Neural Machine Translation of Rare Words with Subword Units, with Python API."
 category = "main"
 optional = false
 python-versions = "*"
+develop = false
+
+[package.source]
+type = "git"
+url = "https://github.com/glample/fastBPE.git"
+reference = "master"
+resolved_reference = "036711f8fdc3265d64e8e123a0761be12c5a8e74"
 
 [[package]]
 name = "jieba"
@@ -88,7 +95,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "db1ed3f7b708461ada26a82dd8de0acab476d5094b87dd627ef405630a9159d5"
+content-hash = "d3676e462d32191790b0b1bbc013b69a6afc2374bb34218c48f962c0c9af15cf"
 
 [metadata.files]
 cython = [
@@ -135,9 +142,7 @@ faiss-gpu = [
     {file = "faiss_gpu-1.6.5-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:f4e137fcd625146ab5c945cf01aaefedc271c599c6b8ffd0a1d3a33e7a99de9b"},
     {file = "faiss_gpu-1.6.5-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:4ec50cdca40ba8a35d9d0e30125c98e685348d4e2e8ae8ecb4c11e595d3efb05"},
 ]
-fastbpe = [
-    {file = "fastBPE-0.1.0.tar.gz", hash = "sha256:95eef4be2689e822a918ac4eae3349cd78ca3f28af591afa421f8fac6d4cd889"},
-]
+fastBPE = []
 jieba = [
     {file = "jieba-0.42.1.tar.gz", hash = "sha256:055ca12f62674fafed09427f176506079bc135638a14e23e25be909131928db2"},
 ]
