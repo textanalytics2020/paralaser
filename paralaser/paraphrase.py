@@ -24,6 +24,7 @@ import time
 import pdb
 import numpy as np
 from collections import namedtuple
+from sys import stdout
 
 from .embed import SentenceEncoder, EncodeLoad, EncodeFile, EncodeTime
 from .lib.text_processing import Token, BPEfastApply
@@ -140,69 +141,66 @@ def buffered_read(fp, buffer_size):
         yield buffer
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser('LASER: paraphrase tool')
+parser = argparse.ArgumentParser('LASER: paraphrase tool')
 
-    parser.add_argument('--encoder', type=str, default=encoder,
-        help='encoder to be used')
-    parser.add_argument('--encoding', default='utf-8',
-        help='Character encoding for input/output')
-    parser.add_argument('--token-lang', type=str, default='--',
-        help="Language of tokenizer ('--' for no tokenization)")
-    parser.add_argument('--bpe-codes', type=str, default=bpe_codes,
-        help='BPE codes')
-    parser.add_argument('--buffer-size', type=int, default=100,
-        help='Buffer size (sentences)')
-    parser.add_argument('--max-tokens', type=int, default=12000,
-        help='Maximum number of tokens to process in a batch')
-    parser.add_argument('--max-sentences', type=int, default=None,
-        help='Maximum number of sentences to process in a batch')
-    parser.add_argument('--cpu', action='store_true',
-        help='Use CPU instead of GPU')
+parser.add_argument('--encoder', type=str, default=encoder,
+    help='encoder to be used')
+parser.add_argument('--encoding', default='utf-8',
+    help='Character encoding for input/output')
+parser.add_argument('--token-lang', type=str, default='--',
+    help="Language of tokenizer ('--' for no tokenization)")
+parser.add_argument('--bpe-codes', type=str, default=bpe_codes,
+    help='BPE codes')
+parser.add_argument('--buffer-size', type=int, default=100,
+    help='Buffer size (sentences)')
+parser.add_argument('--max-tokens', type=int, default=12000,
+    help='Maximum number of tokens to process in a batch')
+parser.add_argument('--max-sentences', type=int, default=None,
+    help='Maximum number of sentences to process in a batch')
+parser.add_argument('--cpu', action='store_true',
+    help='Use CPU instead of GPU')
 
-    #parser.add_argument('--index', type=str, required=True,
-    #    help='FAISS index')
-    parser.add_argument('--nprobe', type=int, default=128,
-        help='FAISS: value of nprobe')
-    #parser.add_argument('--text', type=str, required=True,
-    #    help='File with indexed texts')
-    parser.add_argument(
-        '--dim', type=int, default=1024,
-        help='Dimension of specified sentence embeddings')
-    parser.add_argument(
-        '--embed', type=str, default=None,
-        help='Sentence embeddings, true L2 distance will be calculated when specified')
+#parser.add_argument('--index', type=str, required=True,
+#    help='FAISS index')
+parser.add_argument('--nprobe', type=int, default=128,
+    help='FAISS: value of nprobe')
+#parser.add_argument('--text', type=str, required=True,
+#    help='File with indexed texts')
+parser.add_argument(
+    '--dim', type=int, default=1024,
+    help='Dimension of specified sentence embeddings')
+parser.add_argument(
+    '--embed', type=str, default=None,
+    help='Sentence embeddings, true L2 distance will be calculated when specified')
 
-    parser.add_argument('-i', '--input', type=str, required=True,
-        help='Input text file')
-    parser.add_argument('-p', '--output', type=str, default='--',
-        help='Output paraphrases')
-    parser.add_argument('--kmax', type=int, default=10,
-        help='Max value of distance or margin of each paraphrase')
-    parser.add_argument('--dedup', type=int, default=1,
-        help='Deduplicate list of paraphrases')
-    parser.add_argument('--include-source', default='never',
-        choices=['never', 'matches', 'always'],
-        help='Include source sentence in the list of paraphrases')
-    parser.add_argument('--margin',
-        choices=['absolute', 'distance', 'ratio'],
-        default='ratio', help='Margin function')
-    parser.add_argument('-T', '--threshold-margin', type=float, default=0.9,
-        help='Threshold on margin')
-    parser.add_argument('--threshold-faiss', type=float, default=0.4,
-        help='Threshold on FAISS distance')
-    parser.add_argument('--threshold-L2', type=float, default=0.2,
-        help='Threshold on L2 distance')
-    parser.add_argument('--margin-k', type=int, default=4,
-        help='Number of nearest neighbors for margin calculation')
+parser.add_argument('-i', '--input', type=str, required=True,
+    help='Input text file')
+parser.add_argument('-p', '--output', type=str, default='--',
+    help='Output paraphrases')
+parser.add_argument('--kmax', type=int, default=10,
+    help='Max value of distance or margin of each paraphrase')
+parser.add_argument('--dedup', type=int, default=1,
+    help='Deduplicate list of paraphrases')
+parser.add_argument('--include-source', default='never',
+    choices=['never', 'matches', 'always'],
+    help='Include source sentence in the list of paraphrases')
+parser.add_argument('--margin',
+    choices=['absolute', 'distance', 'ratio'],
+    default='ratio', help='Margin function')
+parser.add_argument('-T', '--threshold-margin', type=float, default=0.9,
+    help='Threshold on margin')
+parser.add_argument('--threshold-faiss', type=float, default=0.4,
+    help='Threshold on FAISS distance')
+parser.add_argument('--threshold-L2', type=float, default=0.2,
+    help='Threshold on L2 distance')
+parser.add_argument('--margin-k', type=int, default=4,
+    help='Number of nearest neighbors for margin calculation')
 
-    parser.add_argument('--verbose', action='store_true',
-        help='Detailed output')
+parser.add_argument('--verbose', action='store_true',
+    help='Detailed output')
 
 
-    print('\nLASER: paraphrase tool')
-    args = parser.parse_args()
-
+def main(args):
     # index,
     # memory mapped texts, references and word counts
     # encoder
@@ -279,3 +277,14 @@ if __name__ == "__main__":
         print('\r - {:d} sentences {:d} paraphrases'
             .format(stats.nbs, stats.nbp), end='')
         EncodeTime(t)
+
+
+def run(args):
+    args = parse.parse_args(args)
+    main(args)
+
+
+if __name__ == "__main__":
+    print('\nLASER: paraphrase tool')
+    args = parser.parse_args()
+    main(args)
