@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "paralaser"
-version = "0.1.3"
+version = "0.1.4"
 authors = []
 description = ""
 license = "BSD-3-Clause"
@@ -8,9 +8,7 @@ license = "BSD-3-Clause"
 packages = [
     { include = "paralaser" }
 ]
-include = [
-    { path = "paralaser/tools-external/**/*", format = "wheel" }
-]
+include = ["paralaser/tools-external/**/*"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
